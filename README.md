@@ -1,2 +1,2 @@
-# eduroam_guest_account_distribution_webapp
+# eduroamゲストアカウント配布サイト
 メンバーにeduroamゲストアカウントを配布するWebアプリ
