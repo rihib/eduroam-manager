@@ -4,7 +4,7 @@ import axios from 'axios';
 import React from 'react';
 import parse from 'html-react-parser';
 
-const baseURL = 'https://jsonplaceholder.typicode.com/posts/1'
+const baseURL = 'https://5ggrco4pfi.execute-api.ap-northeast-1.amazonaws.com/1/dispatcher'
 
 function App() {
   const [page, setPage] = React.useState(null);
@@ -25,11 +25,15 @@ function App() {
 
   const message = 'Oops, I cannot get the page data.'
   if (!page) return message;
-  if (!page.data) return message;
+  if (!page.body) return message;
+
+  let html_textdata = page.body;
+  html_textdata = html_textdata.slice(1);
+  html_textdata = html_textdata.slice(0, -1);
 
   return (
     <div>
-      {parse(page.data)}
+      {parse(html_textdata)}
     </div>
   );
 }
