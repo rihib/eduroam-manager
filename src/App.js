@@ -21,9 +21,9 @@ function App() {
       });
   }, []);
 
-  if (error) return `おっと、エラーみたいですね： ${error.message}`;
+  if (error) return `Oops, looks like an error.: ${error.message}`;
 
-  const message = 'おっと、どうやらページデータを取得できなかったようです。'
+  const message = 'Oops, I cannot get the page data.'
   if (!page) return message;
   if (!page.data) return message;
 
