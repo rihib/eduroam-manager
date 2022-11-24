@@ -4,7 +4,7 @@ import axios from 'axios';
 import React from 'react';
 import parse from 'html-react-parser';
 
-const baseURL = 'https://mockend.com/rihib/Mockend/pages/1'
+const baseURL = 'https://jsonplaceholder.typicode.com/posts/1'
 
 function App() {
   const [page, setPage] = React.useState(null);
