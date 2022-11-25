@@ -26,7 +26,7 @@ def get_html_path_and_arguments():
         if type(wide_number) is int:
             try:
                 payload = {"id": wide_number} # TODO: "id"を"wide_number"に直す
-                eduroam_account_data_response_obj = requests.get("https://jsonplaceholder.typicode.com/users", params=payload)# TODO: プレースホルダーを実際のAPIにリプレースする
+                eduroam_account_data_response_obj = requests.get("https://glaw74iufsxjctmj372zs5wo4q0yoaar.lambda-url.ap-northeast-1.on.aws/", params=payload)
                 eduroam_account_data_response_obj.raise_for_status()
                 eduroam_account_data = eduroam_account_data_response_obj.json()[0]["address"]["geo"] # TODO: APIにあった形に直す
                 user_name = eduroam_account_data_response_obj.json()[0]["name"] # TODO: APIにあった形に直す
