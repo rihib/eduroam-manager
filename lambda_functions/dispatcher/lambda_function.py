@@ -1,6 +1,5 @@
 import json
 import requests
-from requests import exceptions
 
 TERMS_AND_CONDITIONS_HTML_PATH = "term_and_conditions.html"
 EDUROAM_INFO_HTML_PATH = "eduroam_info.html"
