@@ -47,24 +47,24 @@ def get_html_path_and_arguments():
                         html_path_and_arguments["html_path"] = ERR_HTML_PATH
                         html_path_and_arguments["error_message"] = "Invalid eduroam account data"
             
-            except requests.exceptions.RequestException as e:
+            except requests.exceptions.RequestException as err:
                 html_path_and_arguments["html_path"] = ERR_HTML_PATH
-                html_path_and_arguments["error_message"] = e
+                html_path_and_arguments["error_message"] = err
             
-            except Exception as e:
+            except Exception as err:
                 html_path_and_arguments["html_path"] = ERR_HTML_PATH
-                html_path_and_arguments["error_message"] = e
+                html_path_and_arguments["error_message"] = err
     
         else:
             raise Exception("Cannot get WIDE number")
         
-    except requests.exceptions.RequestException as e:
+    except requests.exceptions.RequestException as err:
         html_path_and_arguments["html_path"] = ERR_HTML_PATH
-        html_path_and_arguments["error_message"] = e
+        html_path_and_arguments["error_message"] = err
     
-    except Exception as e:
+    except Exception as err:
         html_path_and_arguments["html_path"] = ERR_HTML_PATH
-        html_path_and_arguments["error_message"] = e
+        html_path_and_arguments["error_message"] = err
     
     return html_path_and_arguments
 
