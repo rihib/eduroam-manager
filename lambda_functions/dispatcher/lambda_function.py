@@ -12,7 +12,7 @@ def lambda_handler(event, context):
     
     return {
         'statusCode': 200,
-        'body': json.dumps(html_textdata)
+        'body': json.dumps(html_textdata, ensure_ascii=False)
     }
 
 def get_html_path_and_arguments():

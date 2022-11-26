@@ -27,7 +27,7 @@ def lambda_handler(event, context):
     
     return {
         'statusCode': 200,
-        'body': json.dumps(result, default=decimal_default_proc)
+        'body': json.dumps(result, default=decimal_default_proc, ensure_ascii=False)
     }
 
 def get_info(type, id):
