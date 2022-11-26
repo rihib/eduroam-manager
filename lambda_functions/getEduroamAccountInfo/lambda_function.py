@@ -9,7 +9,7 @@ def lambda_handler(event, context):
     wide_user_info = get_info("wide_user", wide_number)
     
     if wide_user_info == "Invalid response":
-        result == "WIDE number does not exist"
+        result = "WIDE number does not exist"
     else:
         associated_eduroam_account_id = wide_user_info["associated_eduroam_account_id"]
         wide_user_info = wide_user_info["info"]
