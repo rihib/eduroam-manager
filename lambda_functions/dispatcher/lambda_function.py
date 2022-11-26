@@ -3,7 +3,7 @@ import requests
 
 TERMS_AND_CONDITIONS_HTML_PATH = "term_and_conditions.html"
 EDUROAM_INFO_HTML_PATH = "eduroam_info.html"
-ERR_HTML_PATH = "error.html"
+ERR_HTML_PATH = "err.html"
 
 # TODO: API Gatewayの'Access-Control-Allow-Origin'をS3のものに変更
 def lambda_handler(event, context):
@@ -45,26 +45,26 @@ def get_html_path_and_arguments():
                         html_path_and_arguments["user_name"] = user_name
                     except:
                         html_path_and_arguments["html_path"] = ERR_HTML_PATH
-                        html_path_and_arguments["error_message"] = "Invalid eduroam account data"
+                        html_path_and_arguments["err_message"] = "Invalid eduroam account data"
             
             except requests.exceptions.RequestException as err:
                 html_path_and_arguments["html_path"] = ERR_HTML_PATH
-                html_path_and_arguments["error_message"] = err
+                html_path_and_arguments["err_message"] = err
             
             except Exception as err:
                 html_path_and_arguments["html_path"] = ERR_HTML_PATH
-                html_path_and_arguments["error_message"] = err
+                html_path_and_arguments["err_message"] = err
     
         else:
             raise Exception("Cannot get WIDE number")
         
     except requests.exceptions.RequestException as err:
         html_path_and_arguments["html_path"] = ERR_HTML_PATH
-        html_path_and_arguments["error_message"] = err
+        html_path_and_arguments["err_message"] = err
     
     except Exception as err:
         html_path_and_arguments["html_path"] = ERR_HTML_PATH
-        html_path_and_arguments["error_message"] = err
+        html_path_and_arguments["err_message"] = err
     
     return html_path_and_arguments
 
@@ -88,7 +88,7 @@ def get_html_textdata(html_path_and_arguments):
     
     if html_path == ERR_HTML_PATH:
         html_textdata = html_textdata.format(
-            error_message = html_path_and_arguments["error_message"]
+            err_message = html_path_and_arguments["err_message"]
             )
             
     html_textdata = html_textdata.replace("\n", "")
