@@ -25,18 +25,30 @@ def get_html_path_and_arguments():
         
         if type(wide_number) is int:
             try:
-                payload = {"id": wide_number} # TODO: "id"を"wide_number"に直す
+                payload = {"wide_number": wide_number}
                 eduroam_account_data_response_obj = requests.get("https://glaw74iufsxjctmj372zs5wo4q0yoaar.lambda-url.ap-northeast-1.on.aws/", params=payload)
                 eduroam_account_data_response_obj.raise_for_status()
-                eduroam_account_data = eduroam_account_data_response_obj.json()[0]["address"]["geo"] # TODO: APIにあった形に直す
-                user_name = eduroam_account_data_response_obj.json()[0]["name"] # TODO: APIにあった形に直す
-                user_email = eduroam_account_data_response_obj.json()[0]["email"] # TODO: APIにあった形に直す
+                
+                if eduroam_account_data == "WIDE number does not exist":
+                    raise Exception("WIDE number does not exist")
+                    
+                eduroam_account_data = eduroam_account_data_response_obj.json()["eduroam_account_info"]
+                wide_user_data = eduroam_account_data_response_obj.json()["wide_user_info"]
+                user_name_list = wide_user_data["name"]
+                user_email = wide_user_data["email"]
+                
+                user_name = ""
+                for name in user_name_list:
+                    user_name += name
+                    user_name += "　"
+                user_name = user_name[:-1]
+                
+                if eduroam_account_data == "Invalid association":
+                    raise Exception("Invalid association")
                 
                 if eduroam_account_data == "unissued":
                     html_path_and_arguments["html_path"] = TERMS_AND_CONDITIONS_HTML_PATH
                     html_path_and_arguments["user_name"] = user_name
-                elif eduroam_account_data == "WIDE number does not exist":
-                    raise Exception("WIDE number does not exist")
                 else:
                     try:
                         html_path_and_arguments["html_path"] = EDUROAM_INFO_HTML_PATH
