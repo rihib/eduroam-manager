@@ -26,14 +26,16 @@ def get_html_path_and_arguments():
         if type(wide_number) is int:
             try:
                 payload = {"wide_number": wide_number}
-                eduroam_account_data_response_obj = requests.get("https://glaw74iufsxjctmj372zs5wo4q0yoaar.lambda-url.ap-northeast-1.on.aws/", params=payload)
-                eduroam_account_data_response_obj.raise_for_status()
+                response_obj = requests.get("https://glaw74iufsxjctmj372zs5wo4q0yoaar.lambda-url.ap-northeast-1.on.aws/", params=payload)
+                response_obj.raise_for_status()
                 
-                if eduroam_account_data == "WIDE number does not exist":
+                response = response_obj.json()
+                
+                if response == "WIDE number does not exist":
                     raise Exception("WIDE number does not exist")
-                    
-                eduroam_account_data = eduroam_account_data_response_obj.json()["eduroam_account_info"]
-                wide_user_data = eduroam_account_data_response_obj.json()["wide_user_info"]
+                
+                eduroam_account_data = response["eduroam_account_info"]
+                wide_user_data = response_obj.json()["wide_user_info"]
                 user_name_list = wide_user_data["name"]
                 user_email = wide_user_data["email"]
                 
@@ -52,8 +54,8 @@ def get_html_path_and_arguments():
                 else:
                     try:
                         html_path_and_arguments["html_path"] = EDUROAM_INFO_HTML_PATH
-                        html_path_and_arguments["eduroam_account_username"] = eduroam_account_data["lat"] # TODO: "lat"を"username"に直す
-                        html_path_and_arguments["eduroam_account_password"] = eduroam_account_data["lng"] # TODO: "lng"を"password"に直す
+                        html_path_and_arguments["eduroam_account_username"] = eduroam_account_data["username"]
+                        html_path_and_arguments["eduroam_account_password"] = eduroam_account_data["password"]
                         html_path_and_arguments["user_name"] = user_name
                     except:
                         html_path_and_arguments["html_path"] = ERR_HTML_PATH

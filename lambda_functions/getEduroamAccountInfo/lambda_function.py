@@ -5,7 +5,8 @@ from botocore.exceptions import ClientError
 from decimal import Decimal
 
 def lambda_handler(event, context):
-    wide_user_info = get_info("wide_user", event["wide_number"])
+    wide_number = int(event["queryStringParameters"]["wide_number"])
+    wide_user_info = get_info("wide_user", wide_number)
     
     if wide_user_info == "Invalid response":
         result == "WIDE number does not exist"
