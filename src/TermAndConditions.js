@@ -5,6 +5,7 @@ import { root } from './index.js'
 
 export function TermAndConditions() {
   return (
+    // TODO: JSXで渡された引数を埋め込む
     <div>
       <h1>Term & Conditions</h1>
       <h2>田中　太郎-san</h2>
@@ -18,6 +19,7 @@ export function TermAndConditions() {
 
 function DistributeEduroamAccounts() {
   const distributeAPIURL = 'https://5ggrco4pfi.execute-api.ap-northeast-1.amazonaws.com/1/distribute';
+  // TODO: html_textdataではなく、作成したJSXファイルをインポートする形にする。
   let html_textdata = "";
 
   axios

@@ -21,6 +21,11 @@ function App() {
       });
   }, []);
 
+  // TODO: `Oops, looks like an error.'や、'Please wait.'、apiから返されるHTMLを使う代わりに
+  // React上で、JSXでHTMLを作って、それを返すように変更する。
+  // なので、apiはHTMLではなく、HTMLファイルの名前と引数をJSONで返すようにする。
+  // それらのJSXで作るHTMLは別のファイルからインポートする形にすることで他の箇所でも再利用できるようにする。
+
   if (error) return `Oops, looks like an error.: ${error.message}`;
 
   const message = 'Please wait.'
@@ -31,10 +36,11 @@ function App() {
   html_textdata = html_textdata.slice(1);
   html_textdata = html_textdata.slice(0, -1);
 
+  // TODO: apiから返されたHTMLファイルの名前で条件分岐するように変更する。
   if (html_textdata === "<h1>Term & Conditions</h1><h2>田中　太郎-san</h2><p>This is Term & Conditions.</p>") {
     return (
       <div>
-        <TermAndConditions />
+        <TermAndConditions />  {/* TODO: apiから返された引数を渡す */}
       </div>
     );
   } else {
