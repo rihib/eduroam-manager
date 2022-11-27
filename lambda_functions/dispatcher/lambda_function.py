@@ -5,7 +5,6 @@ TERMS_AND_CONDITIONS_HTML_PATH = "term_and_conditions.html"
 EDUROAM_INFO_HTML_PATH = "eduroam_info.html"
 ERR_HTML_PATH = "err.html"
 
-# TODO: API Gatewayの'Access-Control-Allow-Origin'をS3のものに変更
 def lambda_handler(event, context):
     html_path_and_arguments = get_html_path_and_arguments()
     html_textdata = get_html_textdata(html_path_and_arguments)
