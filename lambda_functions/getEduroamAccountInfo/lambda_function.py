@@ -39,7 +39,7 @@ def get_info(type, id):
     :return: The info of the wide user or the eduroam account.
     """
     dynamodb = boto3.resource("dynamodb")
-    table = dynamodb.Table("eduroam_account_distributor")
+    table = dynamodb.Table("wide_eduroam")
     
     try:
         response = table.get_item(Key={"type": type, 'id': id})
