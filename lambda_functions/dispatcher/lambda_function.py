@@ -34,7 +34,7 @@ def get_html_path_and_arguments():
                     raise Exception("WIDE number does not exist")
                 
                 eduroam_account_data = response["eduroam_account_info"]
-                wide_user_data = response_obj.json()["wide_user_info"]
+                wide_user_data = response["wide_user_info"]
                 user_name_list = wide_user_data["name"]
                 user_email = wide_user_data["email"]
                 
