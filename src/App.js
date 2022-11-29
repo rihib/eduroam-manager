@@ -37,9 +37,10 @@ function App() {
   html_textdata = html_textdata.slice(0, -1);
 
   // TODO: apiから返されたHTMLファイルの名前で条件分岐するように変更する。
-  if (html_textdata === "<h1>Term & Conditions</h1><h2>田中　太郎-san</h2><p>This is Term & Conditions.</p>") {
+  if (html_textdata.substr(4, 17) === "Term & Conditions") {
     return (
       <div>
+        {parse(html_textdata)}
         <TermAndConditions />  {/* TODO: apiから返された引数を渡す */}
       </div>
     );

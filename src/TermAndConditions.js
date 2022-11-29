@@ -7,9 +7,6 @@ export function TermAndConditions() {
   return (
     // TODO: JSXで渡された引数を埋め込む
     <div>
-      <h1>Term & Conditions</h1>
-      <h2>田中　太郎-san</h2>
-      <p>This is Term & Conditions.</p>
       <button onClick={ DistributeEduroamAccounts }>
         Agree & Get Eduroam Account
       </button>
