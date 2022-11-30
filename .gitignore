@@ -11,6 +11,9 @@
 # production
 /build
 
+# builds with SourceMap
+/devBuild
+
 # misc
 .DS_Store
 .env.local
