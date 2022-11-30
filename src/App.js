@@ -1,5 +1,4 @@
-// import logo from './logo.svg';
-// import './App.css';
+import './App.css';
 import axios from 'axios';
 import React from 'react';
 import parse from 'html-react-parser';
