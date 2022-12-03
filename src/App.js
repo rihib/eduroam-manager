@@ -18,7 +18,6 @@ function App() {
         AuthZCode: AuthZCode
       }
     }
-    console.log(AuthZCode);
 
     axios
       .get(dispatcherAPIURL, options)
