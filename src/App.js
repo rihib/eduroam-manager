@@ -3,6 +3,7 @@ import axios from 'axios';
 import React from 'react';
 import parse from 'html-react-parser';
 import { TermAndConditions } from './TermAndConditions';
+import { getAuthZCode } from './getAuthZCode';
 
 function App() {
   const dispatcherAPIURL = 'https://5ggrco4pfi.execute-api.ap-northeast-1.amazonaws.com/1/dispatcher';
@@ -10,8 +11,17 @@ function App() {
   const [error, setError] = React.useState(null);
 
   React.useEffect(() => {
+    let AuthZCode = getAuthZCode();
+    AuthZCode = AuthZCode.substr(6);
+    const options = {
+      params: {
+        AuthZCode: AuthZCode
+      }
+    }
+    console.log(AuthZCode);
+
     axios
-      .get(dispatcherAPIURL)
+      .get(dispatcherAPIURL, options)
       .then(response => {
         setPage(response.data);
       })

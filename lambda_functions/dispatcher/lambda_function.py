@@ -6,21 +6,26 @@ EDUROAM_INFO_HTML_PATH = "eduroam_info.html"
 ERR_HTML_PATH = "err.html"
 
 def lambda_handler(event, context):
-    html_path_and_arguments = get_html_path_and_arguments()
-    html_textdata = get_html_textdata(html_path_and_arguments)
+    try:
+        authz_code = event["AuthZCode"]
+        html_path_and_arguments = get_html_path_and_arguments(authz_code)
+        html_textdata = get_html_textdata(html_path_and_arguments)
+    except Exception:
+        html_textdata = "Invalid Request"
     
     return {
         'statusCode': 200,
         'body': json.dumps(html_textdata, ensure_ascii=False)
     }
 
-def get_html_path_and_arguments():
+def get_html_path_and_arguments(authz_code):
     html_path_and_arguments = {}
     
     try:
-        wide_number_response_obj = requests.get("https://jsonplaceholder.typicode.com/users/1") # TODO: プレースホルダーを実際のAPIにリプレースする
+        payload = {"authz_code": authz_code}
+        wide_number_response_obj = requests.get("https://crmdeietushcq4gphlhoc5nwnq0tjxxb.lambda-url.ap-northeast-1.on.aws/", params=payload)
         wide_number_response_obj.raise_for_status()
-        wide_number = wide_number_response_obj.json()["id"] # TODO: "id"を"wide_number"に直す
+        wide_number = wide_number_response_obj.json()
         
         if type(wide_number) is int:
             try:
@@ -67,6 +72,12 @@ def get_html_path_and_arguments():
             except Exception as err:
                 html_path_and_arguments["html_path"] = ERR_HTML_PATH
                 html_path_and_arguments["err_message"] = err
+                
+        elif wide_number[:63] == "Authorization Code is expired. Please logout and login again.: ":
+            raise Exception(wide_number)
+        
+        elif wide_number[:53] == "Failed to connect to aws or access_token is expired. ":
+            raise Exception(wide_number)
     
         else:
             raise Exception("Cannot get WIDE number")

@@ -2,6 +2,7 @@ import axios from 'axios';
 import React from 'react';
 import parse from 'html-react-parser';
 import { root } from './index.js'
+import { getAuthZCode } from './getAuthZCode';
 
 export function TermAndConditions() {
   return (
@@ -15,12 +16,15 @@ export function TermAndConditions() {
 }
 
 function DistributeEduroamAccounts() {
+  const AuthZCode = getAuthZCode();
   const distributeAPIURL = 'https://5ggrco4pfi.execute-api.ap-northeast-1.amazonaws.com/1/distribute';
   // TODO: html_textdataではなく、作成したJSXファイルをインポートする形にする。
   let html_textdata = "";
 
   axios
-    .put(distributeAPIURL)
+    .put(distributeAPIURL, {
+      AuthZCode: AuthZCode
+    })
     .then(response => {
       const page = response.data;
       if (page) {

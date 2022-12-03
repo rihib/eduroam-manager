@@ -8,7 +8,8 @@ from decimal import Decimal
 EDUROAM_INFO_HTML_PATH = "eduroam_info.html"
 
 def lambda_handler(event, context):
-    wide_number = get_wide_number()
+    authz_code = event["AuthZCode"]
+    wide_number = get_wide_number(authz_code)
     if type(wide_number) is int:
         wide_user_info = get_wide_user_info(wide_number)
         
@@ -18,19 +19,27 @@ def lambda_handler(event, context):
             result = get_eduroam_account_info_and_wide_user_info(wide_number, wide_user_name, wide_user_email)
         except Exception as err:
             result = wide_user_info
+    
+    elif wide_number[:63] == "Authorization Code is expired. Please logout and login again.: ":
+        result = wide_number
+        
+    elif wide_number[:53] == "Failed to connect to aws or access_token is expired. ":
+        result = wide_number
+    
     else:
         result = wide_number
     
     return {
         'statusCode': 200,
-        'body': json.dumps(str(result), default=decimal_default_proc, ensure_ascii=False)
+        'body': json.dumps(result, default=decimal_default_proc, ensure_ascii=False)
     }
 
-def get_wide_number():
+def get_wide_number(authz_code):
     try:
-        wide_number_response_obj = requests.get("https://jsonplaceholder.typicode.com/users/1") # TODO: プレースホルダーを実際のAPIにリプレースする
+        payload = {"authz_code": authz_code}
+        wide_number_response_obj = requests.get("https://crmdeietushcq4gphlhoc5nwnq0tjxxb.lambda-url.ap-northeast-1.on.aws/", params=payload)
         wide_number_response_obj.raise_for_status()
-        wide_number = wide_number_response_obj.json()["id"] # TODO: "id"を"wide_number"に直す
+        wide_number = wide_number_response_obj.json()
         return wide_number
     
     except requests.exceptions.RequestException as err:
