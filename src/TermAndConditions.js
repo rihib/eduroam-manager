@@ -16,14 +16,14 @@ export function TermAndConditions() {
 }
 
 function DistributeEduroamAccounts() {
-  const AuthZCode = getAuthZCode();
+  const accessToken = getAuthZCode(); // TODO: 実際はaccessTokenを取得しているので、名前を直すか、Cognito@Edgeを使わずに自分で実装して、認証コードを使うようにするか、どっちかにする
   const distributeAPIURL = 'https://5ggrco4pfi.execute-api.ap-northeast-1.amazonaws.com/1/distribute';
   // TODO: html_textdataではなく、作成したJSXファイルをインポートする形にする。
   let html_textdata = "";
 
   axios
     .put(distributeAPIURL, {
-      AuthZCode: AuthZCode
+      AuthZCode: accessToken // TODO: 実際はaccessTokenを取得しているので、名前を直すか、Cognito@Edgeを使わずに自分で実装して、認証コードを使うようにするか、どっちかにする
     })
     .then(response => {
       const page = response.data;

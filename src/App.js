@@ -11,11 +11,10 @@ function App() {
   const [error, setError] = React.useState(null);
 
   React.useEffect(() => {
-    let AuthZCode = getAuthZCode();
-    AuthZCode = AuthZCode.substr(6);
+    let accessToken = getAuthZCode(); // TODO: 実際はaccessTokenを取得しているので、名前を直すか、Cognito@Edgeを使わずに自分で実装して、認証コードを使うようにするか、どっちかにする
     const options = {
       params: {
-        AuthZCode: AuthZCode
+        AuthZCode: accessToken // TODO: 実際はaccessTokenを取得しているので、名前を直すか、Cognito@Edgeを使わずに自分で実装して、認証コードを使うようにするか、どっちかにする
       }
     }
 
@@ -43,6 +42,7 @@ function App() {
   let html_textdata = page.body;
   html_textdata = html_textdata.slice(1);
   html_textdata = html_textdata.slice(0, -1);
+  html_textdata = html_textdata.replace(/\\/g, "");
 
   // TODO: apiから返されたHTMLファイルの名前で条件分岐するように変更する。
   if (html_textdata.substr(4, 17) === "Term & Conditions") {

@@ -7,15 +7,14 @@ from botocore.exceptions import ClientError
 from decimal import Decimal
 
 def lambda_handler(event, context):
-    authz_code = event["rawQueryString"][11:]
-    access_token = get_access_token(authz_code)
+    access_token = event["rawQueryString"][11:]
     
-    if access_token[:63] == "Authorization Code is expired. Please logout and login again.: ": # TODO: これはダサいので、正規表現を使って判定を行いたい。またはもっとコード全体をスマートにするか
+    if access_token == "AuthN Error":
         result = access_token
     else:
         wide_user_email = get_wide_user_email(access_token)
         
-        if wide_user_email[:53] == "Failed to connect to aws or access_token is expired. ": # TODO: ここも正規表現を使う
+        if wide_user_email[:53] == "Failed to connect to aws or access_token is expired. ": # TODO: ダサいので正規表現を使うか、そもそもこういうコードを書かなくて済むようにリファクタするか
             result = wide_user_email
         else:
             wide_number = get_wide_number(wide_user_email)
@@ -26,22 +25,22 @@ def lambda_handler(event, context):
         'body': json.dumps(result)
     }
 
-def get_access_token(authz_code):
-    # TODO: 最初にCookie等にaccess_tokenが保存されていないか調べて、保存されていたらそれを使うようにしたい。
-    try:
-        payload = {
-            'Content-Type': 'application/x-www-form-urlencoded', 
-            'grant_type': 'authorization_code', 
-            'client_id': config.CLIENT_ID, 
-            'code': authz_code, 
-            'redirect_uri': "http://localhost:3000/" # 'https://doc2xmjzxoyxn.cloudfront.net'
-        }
-        response = requests.post(config.COGNITO_URL, data=payload)
-        # TODO: トークンを取得したら、Cookie等に保存したい。
-        access_token = response.json()["access_token"]
-        return access_token
-    except Exception as err:
-        return f"Authorization Code is expired. Please logout and login again.: {err}"
+# def get_access_token(authz_code):
+#     # TODO: 最初にCookie等にaccess_tokenが保存されていないか調べて、保存されていたらそれを使うようにしたい。
+#     try:
+#         payload = {
+#             'Content-Type': 'application/x-www-form-urlencoded', 
+#             'grant_type': 'authorization_code', 
+#             'client_id': config.CLIENT_ID, 
+#             'code': authz_code, 
+#             'redirect_uri': "http://localhost:3000/" # 'https://doc2xmjzxoyxn.cloudfront.net'
+#         }
+#         response = requests.post(config.COGNITO_URL, data=payload)
+#         # TODO: トークンを取得したら、Cookie等に保存したい。
+#         access_token = response.json()["access_token"]
+#         return access_token
+#     except Exception as err:
+#         return f"Authorization Code is expired. Please logout and login again.: {err}"
     
 def get_wide_user_email(access_token):
     try:
