@@ -20,11 +20,14 @@ function DistributeEduroamAccounts() {
   const distributeAPIURL = 'https://5ggrco4pfi.execute-api.ap-northeast-1.amazonaws.com/1/distribute';
   // TODO: html_textdataではなく、作成したJSXファイルをインポートする形にする。
   let html_textdata = "";
+  const options = {
+    params: {
+      AuthZCode: accessToken // TODO: 実際はaccessTokenを取得しているので、名前を直すか、Cognito@Edgeを使わずに自分で実装して、認証コードを使うようにするか、どっちかにする
+    }
+  }
 
   axios
-    .put(distributeAPIURL, {
-      AuthZCode: accessToken // TODO: 実際はaccessTokenを取得しているので、名前を直すか、Cognito@Edgeを使わずに自分で実装して、認証コードを使うようにするか、どっちかにする
-    })
+    .get(distributeAPIURL, options)
     .then(response => {
       const page = response.data;
       if (page) {
