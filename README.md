@@ -7,7 +7,6 @@
 <img width="6147" alt="システムフロー図" src="https://user-images.githubusercontent.com/76939037/216056001-ef9ada7a-f393-4317-9c75-7a489426d923.png">
 
 ## システムアーキテクチャ図
-![10bd210f-dea6-4151-95f5-eb2fa25afc2a](https://user-images.githubusercontent.com/76939037/216056299-5ead09db-230f-447c-bb97-25be6d51c3a8.png)
 <img width="6147" alt="システムアーキテクチャ図" src="https://user-images.githubusercontent.com/76939037/216056299-5ead09db-230f-447c-bb97-25be6d51c3a8.png">
 
 ## デプロイ
