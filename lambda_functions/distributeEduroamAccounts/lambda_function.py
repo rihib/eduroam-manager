@@ -6,6 +6,7 @@ from botocore.exceptions import ClientError
 from decimal import Decimal
 
 EDUROAM_INFO_HTML_PATH = "eduroam_info.html"
+MAX_EDUROAM_ACCOUNT_ID = 60 # TODO: これはダサいので治すこと
 
 def lambda_handler(event, context):
     authz_code = event["AuthZCode"]
@@ -31,7 +32,7 @@ def lambda_handler(event, context):
     
     return {
         'statusCode': 200,
-        'body': json.dumps(result, default=decimal_default_proc, ensure_ascii=False)
+        'body': json.dumps(result, ensure_ascii=False)
     }
 
 def get_wide_number(authz_code):
@@ -118,18 +119,22 @@ def get_eduroam_account_info_and_wide_user_info(wide_number, wide_user_name, wid
                 return err
             
             # id = eduroam_account_id + 1 のeduroamアカウントについて、flag = 1 に更新する。idが存在しない場合は、配り終わったことを返す
-            try:
-                table.update_item(
-                    Key={'type': "eduroam_account", 'id': eduroam_account_id + Decimal(1)},
-                    UpdateExpression="set flag=:f",
-                    ExpressionAttributeValues={':f': Decimal(1)},
-                    ReturnValues="UPDATED_NEW")
-            except ClientError as err:
-                err_code = err.response['Error']['Code']
-                err_message = err.response['Error']['Message']
-                return f"{err_code}: {err_message}"
-            except Exception as err:
-                return err
+            if int(eduroam_account_id) != MAX_EDUROAM_ACCOUNT_ID: # TODO: これはダサいので治すこと
+                try:
+                    if int(eduroam_account_id + Decimal(1)) > MAX_EDUROAM_ACCOUNT_ID: # TODO: これはダサいので治すこと
+                        return "All eduroam accounts have been distributed."
+                    else:
+                        table.update_item(
+                            Key={'type': "eduroam_account", 'id': eduroam_account_id + Decimal(1)},
+                            UpdateExpression="set flag=:f",
+                            ExpressionAttributeValues={':f': Decimal(1)},
+                            ReturnValues="UPDATED_NEW")
+                except ClientError as err:
+                    err_code = err.response['Error']['Code']
+                    err_message = err.response['Error']['Message']
+                    return f"{err_code}: {err_message}"
+                except Exception as err:
+                    return err
             
             # id = wide_number のwideユーザーにアクセスして、associated_eduroam_account_id = eduroam_account_id に更新する。
             try:

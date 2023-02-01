@@ -55,7 +55,7 @@ def get_wide_user_email(access_token):
         return wide_user_email
     except Exception as err:
         # TODO: access_tokenが有効期限切れ(1h)ならCookie等に保存してあるrefresh_tokenを使用して再度有効なaccess_tokenを取得するようにしたい。
-        return f"Failed to connect to aws or access_token is expired. Please logout and login again.: {err}"
+        return f"Failed to connect to aws or access_token is expired. Please logout and login again.hello: {err}"
     
 def get_wide_number(wide_user_email):
     dynamodb = boto3.resource("dynamodb")

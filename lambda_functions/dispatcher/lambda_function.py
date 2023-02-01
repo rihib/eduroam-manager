@@ -56,11 +56,18 @@ def get_html_path_and_arguments(authz_code):
                     html_path_and_arguments["html_path"] = TERMS_AND_CONDITIONS_HTML_PATH
                     html_path_and_arguments["user_name"] = user_name
                 else:
+                    html_path_and_arguments["html_path"] = EDUROAM_INFO_HTML_PATH
+                    html_path_and_arguments["user_name"] = user_name
                     try:
-                        html_path_and_arguments["html_path"] = EDUROAM_INFO_HTML_PATH
-                        html_path_and_arguments["eduroam_account_username"] = eduroam_account_data["username"]
-                        html_path_and_arguments["eduroam_account_password"] = eduroam_account_data["password"]
-                        html_path_and_arguments["user_name"] = user_name
+                        html_path_and_arguments["eduroam_account_username"] = eduroam_account_data["info"]["username"]
+                        html_path_and_arguments["eduroam_account_password"] = eduroam_account_data["info"]["password"]
+                    except KeyError:
+                        try:
+                            html_path_and_arguments["eduroam_account_username"] = eduroam_account_data["username"] # TODO: この部分の例外処理はダサいので直すこと
+                            html_path_and_arguments["eduroam_account_password"] = eduroam_account_data["password"]
+                        except:
+                            html_path_and_arguments["html_path"] = ERR_HTML_PATH
+                            html_path_and_arguments["err_message"] = "Invalid eduroam account data..."
                     except:
                         html_path_and_arguments["html_path"] = ERR_HTML_PATH
                         html_path_and_arguments["err_message"] = "Invalid eduroam account data"
